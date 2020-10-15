@@ -1,9 +1,9 @@
 deployScripts:
   start:
     - npm install
-    - npm run dev
+    - pm2 start
   delete:
-    - npm run dev 
+    - pm2 stop
   restart:
-    - npm install
+    - pm2 restart
  
