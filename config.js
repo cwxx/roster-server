@@ -4,7 +4,7 @@ const config = {
     networkTimeout: 30000,
     // 本地环境开发
     serverHost: 'http://localhost/',
-    port: '5757',
+    port: '3000',
     rootPathname: '/',
 
     // 微信小程序 App ID
