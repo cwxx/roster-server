@@ -1,0 +1,9 @@
+deployScripts:
+  start:
+    - npm install
+    - npm run dev
+  delete:
+    - npm run stop
+  restart:
+    - npm install
+    - npm run restart
