@@ -1,0 +1,36 @@
+{
+  "name": "roster-server",
+  "version": "1.0.0",
+  "description": "hospital weChat program",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --config nodemon.json app.js",
+    "test": "npm run test"
+  },
+  "keywords": [
+    "roster hospital"
+  ],
+  "author": "chenwenxiang",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "express": "^4.17.1",
+    "knex": "^0.21.5",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-log4": "^2.3.2",
+    "koa-router": "^9.4.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.4"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.1.0",
+    "debug": "^2.6.8",
+    "eslint": "^3.9.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.3.1",
+    "eslint-plugin-standard": "^2.0.1"
+  }
+}
