@@ -26,6 +26,7 @@ const rosterService = {
             rosterList[i].roster_time = _date + ' ' +  _weekend;
             console.log(rosterList[i].roster_time)
         }
+        
         return rosterList;
     },
     /**
