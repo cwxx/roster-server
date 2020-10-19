@@ -13,7 +13,7 @@ const rosterModel = {
                 department_id: queryParams.department_id,
                 organization_id: queryParams.organization_id,
             })
-            .whereIn('user_id', [queryParams.id])
+            .whereIn('user_id', [parseInt(queryParams.id)])
             .having('roster_time', '>', queryParams.rosterTime)
             .orderBy('roster_time', 'desc')
             .select('id','title','status','user_id','department_id','roster_time')

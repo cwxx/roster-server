@@ -4,10 +4,7 @@ const package = require('./package.json');
 module.exports = {
   apps : [{
     name: package.name,
-    script: 'npm',
-
-    // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
-    args: '-- run dev',
+    script: 'app.js',
     instances: 1,
     autorestart: true,
     watch: false,
@@ -19,7 +16,7 @@ module.exports = {
       NODE_ENV: 'development'
     },
     env_production: {
-      NODE_ENV: 'production'
+      NODE_ENV: 'production',
     }
   }],
 };
