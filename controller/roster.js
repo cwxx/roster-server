@@ -2,7 +2,7 @@ const rosterService = require('../services/roster')
 const debug = require('debug')('roster')
 const roster = {
     /**
-     * 查询排班信息
+     * 查询我的今日排班信息
      * @param ctx
      * @param next
      * @returns {Promise<void>}
@@ -25,7 +25,109 @@ const roster = {
                 message: 'fail'
             }
         }
+    },
+    /**
+     * 查询我的本周排班
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getWeekMe(ctx, next) {
+        const { id, department_id, organization_id } = ctx.request.query;
+        console.log({ id, department_id, organization_id })
+        try {
+            const result = await rosterService.getMeWeekList({ id, department_id, organization_id })
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: 'success'
+            }
 
+        } catch (e) {
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
+
+    },
+    /**
+     * 获取本部门所有人今日排班
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getToday(ctx, next) {
+        const { department_id, organization_id } = ctx.request.query;
+        console.log({ department_id, organization_id })
+        try {
+            const result = await rosterService.getTodayList(department_id, organization_id)
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: 'success'
+            }
+
+        } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
+
+    },
+    /**
+     * 获取本部门所有人本周排班
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getWeek(ctx, next) {
+        const { department_id, organization_id } = ctx.request.query;
+        try {
+            const result = await rosterService.getWeekList(department_id, organization_id)
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: 'success'
+            }
+
+        } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
+
+    },
+    /**
+     * 获取本部门所有人当月排班
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getMonth(ctx, next) {
+        const { department_id, organization_id } = ctx.request.query;
+        try {
+            const result = await rosterService.getMonthList(department_id, organization_id)
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: 'success'
+            }
+        } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
 
     },
     /**
@@ -59,7 +161,6 @@ const roster = {
      */
     async getExistOne(ctx, next) {
         const {roster_id} = ctx.request.query
-        console.log('@@@@@@@@@@',roster_id)
         debug(roster_id)
         try {
             const result = await rosterService.selectOne(roster_id)
@@ -69,6 +170,7 @@ const roster = {
                 message: 'success'
             }
         } catch (e) {
+            debug(e)
             ctx.body = {
                 code: -1,
                 data: e,
@@ -86,17 +188,23 @@ const roster = {
         try {
             const {
                 applicationId,
+                applicationTargert_id,
                 roster_id,
                 applicationRosterType,
+                applicationTargertRosterType,
                 applicationTime,
+                applicationTargert_time,
                 applicationType,
                 departmentId
             } = ctx.request.body;
             await rosterService.add({
                 applicationId,
+                applicationTargert_id,
                 roster_id,
                 applicationRosterType,
+                applicationTargertRosterType,
                 applicationTime,
+                applicationTargert_time,
                 applicationType,
                 departmentId,
             })
@@ -107,7 +215,9 @@ const roster = {
             }
 
         } catch (e) {
+            debug(e)
             ctx.body = {
+
                 code: -1,
                 data: e,
                 message: 'fail'

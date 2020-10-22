@@ -2,23 +2,97 @@ const rosterModel = require('../models/rosterModel')
 const debug = require('debug')('roster')
 const moment = require('moment')
 
+moment.locale('zh-CN');
+
 const rosterService = {
     /**
-     * 查询当前部门，当前用户的排班
+     * 查询当前部门，当前用户的今日排班
      * @param queryParams
      * @returns {Promise<*>}
      */
     async getList(queryParams) {
-        //上周天
-        let currentTime = moment(new Date()).day(0).format('YYYYMMDD');
-        queryParams.id = queryParams.id.toString()
-        debug(currentTime)
-        Object.assign(queryParams, {rosterTime: currentTime})
+        //今天零时零分零秒
+        let startTime = moment().startOf('day').format();
+        // 今天23时59分59秒
+        let endTime = moment().endOf('day').format();
+
+        Object.assign(queryParams, {startTime: startTime, endTime: endTime})
+        return this.getMeRoster(queryParams);
+    },
+    /**
+     * 查询当前部门，当前用户的本周排班
+     * @param queryParams
+     * @returns {Promise<*>}
+     */
+    async getMeWeekList(queryParams) {
+        // 本周第一天零时零分零秒
+        let startTime = moment().startOf('week').format();
+        // 本周最后一天23时59分59秒
+        let endTime = moment().endOf('week').format();
+
+        Object.assign(queryParams, {startTime: startTime, endTime: endTime})
+        return this.getMeRoster(queryParams);
+    },
+    /**
+     * 获取本部门今日排班
+     * @param department_id
+     * @param organization_id
+     * @returns {Promise<*>}
+     */
+    async getTodayList(department_id, organization_id) {
+        //今天零时零分零秒
+        let startTime = moment().startOf('day').format();
+        // 今天23时59分59秒
+        let endTime = moment().endOf('day').format();
+
+        return this.getDeptRoster({startTime, endTime, department_id, organization_id})
+    },
+    /**
+     * 获取本部门本周排班
+     * @param department_id
+     * @param organization_id
+     * @returns {Promise<*>}
+     */
+    async getWeekList(department_id, organization_id) {
+        // 本周第一天零时零分零秒
+        let startTime = moment().startOf('week').format();
+
+        // 本周最后一天23时59分59秒
+        let endTime = moment().endOf('week').format();
+
+        return this.getDeptRoster({startTime, endTime, department_id, organization_id})
+    },
+    /**
+     * 获取本月部门排班
+     * @param department_id
+     * @param organization_id
+     * @returns {Promise<*>}
+     */
+    async getMonthList(department_id, organization_id) {
+        // 本月第一天零时零分零秒
+        let startTime = moment().startOf('month').format();
+        // 本月最后一天23时59分59秒
+        let endTime = moment().endOf('month').format();
+        return this.getDeptRoster({startTime, endTime, department_id, organization_id})
+
+    },
+    async getDeptRoster(queryParams) {
+        const rosterList = await rosterModel.getDeptRoster(queryParams)
+        for(let i=0, len=rosterList.length; i<len; i++) {
+            let _date = moment(rosterList[i].roster_time).format('LL')
+            let _weekend = moment(rosterList[i].roster_time).format('dddd')
+            rosterList[i].roster_time = _date + ' ' +  _weekend;
+            let username = rosterList[i].title.split('||')[1]
+            Object.assign(rosterList[i], {username: username})
+        }
+        return rosterList;
+    },
+    async getMeRoster(queryParams) {
         const rosterList = await rosterModel.getList(queryParams)
-        moment.locale('zh-CN');
+
         for(let i=0, len=rosterList.length; i<len; i++) {
             // 值班时间已过期 status = -1
-            if (moment(new Date()) > rosterList[i].roster_time) {
+            if ( moment(new Date()).add(-1,'days') > rosterList[i].roster_time) {
                 rosterList[i].status = -1;
             }
             let _date = moment(rosterList[i].roster_time).format('LL')
@@ -26,7 +100,7 @@ const rosterService = {
             rosterList[i].roster_time = _date + ' ' +  _weekend;
             console.log(rosterList[i].roster_time)
         }
-        
+
         return rosterList;
     },
     /**
@@ -60,12 +134,15 @@ const rosterService = {
         const insertApplication = {
             roster_id: roster.roster_id,
             application_id: roster.applicationId,
+            applicationTargert_id: roster.applicationTargert_id,
             applicationRosterType: roster.applicationRosterType,
+            applicationTargertRosterType: roster.applicationTargertRosterType,
             application_time:  moment(roster.applicationTime).format("YYYY-MM-DD hh:mm:ss"),
+            applicationTargert_time: moment(roster.applicationTargert_time).format("YYYY-MM-DD hh:mm:ss"),
             applicationType: roster.applicationType,
             create_time: new Date(),
             department_id: roster.departmentId,
-            status: 1
+            status: 1,//待处理
         }
         return rosterModel.insert(insertApplication);
     },

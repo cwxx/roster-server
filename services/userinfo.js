@@ -25,6 +25,9 @@ const userService = {
     },
     async getUserDetail( openId ) {
         return user.getDetail(openId)
+    },
+    async getUserList( departmentId ) {
+        return user.getUsers(departmentId)
     }
 
 }

@@ -52,6 +52,39 @@ const userinfo = {
                 }
             }
         } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: {},
+                message: '获取失败'+ e.sqlMessage
+            }
+        }
+    },
+    /**
+     * 获取当前部门所有用户
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getList(ctx, next) {
+        const { departmentId } = ctx.query;
+        try {
+            if (departmentId) {
+                const userInfo = await userService.getUserList(departmentId);
+                ctx.body = {
+                    code: 200,
+                    data: userInfo,
+                    message: 'success'
+                }
+            } else {
+                ctx.body = {
+                    code: 201,
+                    data: {},
+                    message: 'departmentId为空！'
+                }
+            }
+        } catch (e) {
+            debug(e)
             ctx.body = {
                 code: -1,
                 data: {},

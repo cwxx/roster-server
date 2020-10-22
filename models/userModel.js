@@ -36,7 +36,17 @@ const user = {
      * @returns {object}
      */
     async getDetail( openId ) {
-        return mysql('user').where({open_id: openId})
+        return mysql('user').where({ open_id: openId })
+    },
+    /**
+     * 获取本部门所有用户
+     * @param departmentId
+     * @returns {Promise<void>}
+     */
+    async getUsers( departmentId ) {
+        return mysql('user')
+            .where({ department_id: departmentId })
+            .select('id','username')
     }
 }
 module.exports = user

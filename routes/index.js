@@ -21,7 +21,9 @@ router.get('/home', controllers.desktop)
 
 // 用户信息
 router.get('/userInfo', controllers.userinfo.get)
+router.get('/userInfo/department', controllers.userinfo.getList)
 router.put('/userInfo', controllers.userinfo.put)
+
 
 // 部门信息
 router.get('/department', controllers.department)
@@ -33,10 +35,19 @@ router.get('/organization', controllers.organization)
 router.get('/userType', controllers.userType)
 
 // 排班信息
-router.get('/roster', controllers.roster.get)
+router.get('/roster/me', controllers.roster.get)
+router.get('/roster/week/me',controllers.roster.getWeekMe)
+router.get('/roster/today',controllers.roster.getToday)
+router.get('/roster/week',controllers.roster.getWeek)
+router.get('/roster/month',controllers.roster.getMonth)
 router.get('/roster/detail', controllers.roster.getDetail)
 router.post('/roster/application',controllers.roster.post)
+
+
 router.get('/roster/hasApplication',controllers.roster.getExistOne)
 router.get('/roster/application/schedule',controllers.roster.getSchedule)
+
+// 排班类型
+router.get('/rosterType',controllers.rosterType)
 
 module.exports = router

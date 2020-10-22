@@ -8,7 +8,7 @@ module.exports = {
     instances: 1,
     autorestart: true,
     watch: false,
-    max_memory_restart: '1G',
+    max_memory_restart: '500M',
     log_date_format:'YYYY-MM-DD HH:mm Z',
     error_file:'./.pm2/logs/err.log',
     out_file:'./.pm2/logs/out.log',
