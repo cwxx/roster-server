@@ -2,7 +2,7 @@ const debug = require('debug')('WeChat[auth]')
 const http = require('axios')
 const moment = require('moment')
 const config = require('../config')
-const qcloudProxyLogin = require('./helper/qcloudProxyLogin')
+// const qcloudProxyLogin = require('./helper/qcloudProxyLogin')
 const AuthDbService = require('./authDbService')
 const sha1 = require('./helper/sha1')
 const aesDecrypt = require('./helper/aesDecrypt')
@@ -10,8 +10,8 @@ const { ERRORS, LOGIN_STATE } = require('./constant')
 
 /**
  * 授权模块
- * @param {express request} req
- * @return {Promise}
+ * @param { express request } req
+ * @return { Promise }
  * @example 基于 Express
  * authorization(this.req).then(userinfo => { // ...some code })
  */
@@ -124,6 +124,7 @@ function validation (req) {
  * @return {Promise}
  */
 function authorizationMiddleware (ctx, next) {
+    debug(ctx)
     return authorization(ctx.req).then(result => {
         ctx.state.$wxInfo = result
         return next()
@@ -155,17 +156,17 @@ function getSessionKey (code) {
 
     // 使用腾讯云代小程序登录
     if (useQcloudLogin) {
-        const { qcloudSecretId, qcloudSecretKey } = config
-        return qcloudProxyLogin(qcloudSecretId, qcloudSecretKey, code).then(res => {
-            res = res.data
-            if (res.code !== 0 || !res.data.openid || !res.data.session_key) {
-                debug('%s: %O', ERRORS.ERR_GET_SESSION_KEY, res)
-                throw new Error(`${ERRORS.ERR_GET_SESSION_KEY}\n${JSON.stringify(res)}`)
-            } else {
-                debug('openid: %s, session_key: %s', res.data.openid, res.data.session_key)
-                return res.data
-            }
-        })
+        // const { qcloudSecretId, qcloudSecretKey } = config
+        // return qcloudProxyLogin(qcloudSecretId, qcloudSecretKey, code).then(res => {
+        //     res = res.data
+        //     if (res.code !== 0 || !res.data.openid || !res.data.session_key) {
+        //         debug('%s: %O', ERRORS.ERR_GET_SESSION_KEY, res)
+        //         throw new Error(`${ERRORS.ERR_GET_SESSION_KEY}\n${JSON.stringify(res)}`)
+        //     } else {
+        //         debug('openid: %s, session_key: %s', res.data.openid, res.data.session_key)
+        //         return res.data
+        //     }
+        // })
     } else {
         const appid = config.appId
         const appsecret = config.appSecret
