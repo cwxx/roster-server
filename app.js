@@ -2,7 +2,7 @@ const Koa = require('koa')
 const config = require('./config')
 const response = require('./middlewares/response')
 const bodyParser = require('koa-bodyparser')
-const debug = require('debug')('roster-server')
+const debug = require('debug')('app')
 // const mysql = require('./tools/mysql')
 const app = new Koa()
 
@@ -13,10 +13,11 @@ app.use(response)
 app.use(bodyParser())
 // 引入路由分发
 const router = require('./routes')
-app.use(router.routes())
+
+debug(require)
 app.use(async (ctx)=> {
 
-    ctx.body = 'koa: path is wrong!'
+    ctx.response.body = 'koa: path is wrong!'
 
 })
 // 启动程序，监听端口

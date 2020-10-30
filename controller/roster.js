@@ -217,7 +217,6 @@ const roster = {
         } catch (e) {
             debug(e)
             ctx.body = {
-
                 code: -1,
                 data: e,
                 message: 'fail'
@@ -225,7 +224,7 @@ const roster = {
         }
     },
     /**
-     * 获取调班申请的进度信息
+     * 获取个人的所有申请信息
      * @param ctx
      * @param next
      * @returns {Promise<void>}

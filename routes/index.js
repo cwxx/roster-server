@@ -41,9 +41,8 @@ router.get('/roster/today',controllers.roster.getToday)
 router.get('/roster/week',controllers.roster.getWeek)
 router.get('/roster/month',controllers.roster.getMonth)
 router.get('/roster/detail', controllers.roster.getDetail)
+
 router.post('/roster/application',controllers.roster.post)
-
-
 router.get('/roster/hasApplication',controllers.roster.getExistOne)
 router.get('/roster/application/schedule',controllers.roster.getSchedule)
 

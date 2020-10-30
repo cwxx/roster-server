@@ -45,10 +45,12 @@ const rosterModel = {
     async insert(application) {
         return mysql('change_shifts').insert(application)
     },
-    async querySchedule(application_id, application_time) {
+    async querySchedule(application_id, startTime, endTime) {
         return mysql('change_shifts')
             .where({application_id: application_id})
-            .having('application_time', '>', application_time)
+            .where('create_time', '>=', startTime)
+            .where('create_time', '<', endTime)
+            .orderBy('create_time', 'desc')
             .select('id','application_time','status','roster_id','applicationType','update_time','create_time','handlerTime','handlerUser')
     }
 }

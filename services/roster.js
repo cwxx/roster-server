@@ -146,8 +146,17 @@ const rosterService = {
         }
         return rosterModel.insert(insertApplication);
     },
+    /**
+     * 获取当前日期所在月的个人申请信息
+     * @param application_id
+     * @returns {Promise<*>}
+     */
     async rosterSchedule(application_id) {
-        const result = await rosterModel.querySchedule(application_id, new Date())
+        // 本月第一天零时零分零秒
+        let startTime = moment().startOf('month').format();
+        // 本月最后一天23时59分59秒
+        let endTime = moment().endOf('month').format();
+        const result = await rosterModel.querySchedule(application_id, startTime, endTime )
         result.forEach(item => {
             item.application_time = item.application_time ? moment(item.application_time).format('YYYY-MM-DD') : '';
             item.update_time = item.update_time ?  moment(item.update_time).format('YYYY-MM-DD hh:mm') : '';
