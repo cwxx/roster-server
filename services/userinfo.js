@@ -12,7 +12,7 @@ const userService = {
             role_id: '1', // 默认普通微信用户角色，后台管理员修改角色
             phone: '请输入',
             open_id: wxUserInfo.openId,
-            nickname: wxUserInfo.nickName,
+            nickname: JSON.stringify(wxUserInfo.nickName),
             organization_id: 1,
             status: 2,// 微信用户态
             create_time: moment().format('YYYY-MM-DD HH:mm:ss'),

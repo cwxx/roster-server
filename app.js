@@ -14,10 +14,9 @@ app.use(bodyParser())
 // 引入路由分发
 const router = require('./routes')
 
-debug(require)
 app.use(async (ctx)=> {
 
-    ctx.response.body = 'koa: path is wrong!'
+    ctx.response.body = '报错!'
 
 })
 // 启动程序，监听端口
