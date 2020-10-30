@@ -18,7 +18,9 @@ const userService = {
             create_time: moment().format('YYYY-MM-DD HH:mm:ss'),
             update_time: moment().format('YYYY-MM-DD HH:mm:ss')
         }
+        console.log('userinfo:',userInfo)
        return user.create(userInfo)
+
     },
     async updateUser( userInfo ) {
         return user.update(userInfo)
