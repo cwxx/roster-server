@@ -24,7 +24,7 @@ const config = {
         user: 'root',
         db: 'hospital',
         pass: 'qdyjy',
-        char: 'utf8'
+        char: 'utf8mb4'
     },
     cos: {
         /**
