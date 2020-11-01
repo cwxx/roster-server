@@ -31,12 +31,20 @@ const user = {
         return mysql('user').where({open_id: openId}).select('id')
     },
     /**
-     * 查询该用户的所有信息
+     * 通过openId查询该用户的详细信息
      * @param openId
      * @returns {object}
      */
     async getDetail( openId ) {
         return mysql('user').where({ open_id: openId })
+    },
+    /**
+     * 通过user_id查询该用户的详细信息
+     * @param user_id
+     * @returns { array|| null}
+     */
+    async getDetailById( user_id ) {
+      return mysql('user').where({id: user_id}).select('nickname', 'phone', 'chineseinfo')
     },
     /**
      * 获取本部门所有用户
@@ -46,7 +54,7 @@ const user = {
     async getUsers( departmentId ) {
         return mysql('user')
             .where({ department_id: departmentId })
-            .select('id','username')
+            .select('id','username','phone')
     }
 }
 module.exports = user

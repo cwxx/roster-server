@@ -21,6 +21,7 @@ router.get('/home', controllers.desktop)
 
 // 用户信息
 router.get('/userInfo', controllers.userinfo.get)
+router.get('/userInfo/id', controllers.userinfo.getUserById)
 router.get('/userInfo/department', controllers.userinfo.getList)
 router.put('/userInfo', controllers.userinfo.put)
 

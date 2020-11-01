@@ -15,10 +15,10 @@ const userService = {
             nickname: JSON.stringify(wxUserInfo.nickName),
             organization_id: 1,
             status: 2,// 微信用户态
+            password: '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
             create_time: moment().format('YYYY-MM-DD HH:mm:ss'),
             update_time: moment().format('YYYY-MM-DD HH:mm:ss')
         }
-        console.log('userinfo:',userInfo)
        return user.create(userInfo)
 
     },
@@ -27,6 +27,9 @@ const userService = {
     },
     async getUserDetail( openId ) {
         return user.getDetail(openId)
+    },
+    async getUserDetailById( user_id ) {
+        return user.getDetailById(user_id)
     },
     async getUserList( departmentId ) {
         return user.getUsers(departmentId)
