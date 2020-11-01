@@ -33,8 +33,8 @@ const rosterModel = {
             })
             .where('roster_time', '>=',queryParams.startTime)
             .where('roster_time', '<',queryParams.endTime)
-            .orderBy('roster_time', 'asc')
-            .select('id','title','status','user_id','department_id','roster_time')
+            .orderBy('roster_time', 'desc')
+            .select('id','title','status','user_id', 'roster_time')
     },
     async getDetail(id) {
         return mysql('roster').where({id: id})

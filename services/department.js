@@ -1,6 +1,6 @@
-const department = require('../models/departmentModel')
+const departmentModel = require('../models/departmentModel')
 const utils = require('../tools/utils')
-const debug = require('debug')('depart')
+
 
 const departmentService = {
     /**
@@ -9,8 +9,17 @@ const departmentService = {
      * @returns {Promise<*[]>}
      */
     async getList(organizationId) {
-        const departmentList = await department.getList(organizationId);
+        const departmentList = await departmentModel.getList(organizationId);
         return utils.translateToTree(departmentList)
+    },
+    /**
+     *
+     * @param organizationId
+     * @param id
+     * @returns {parentId}
+     */
+    async getParentId(organizationId, id) {
+        return departmentModel.getParent(organizationId, id)
     }
 }
 module.exports = departmentService;
