@@ -134,6 +134,38 @@ const userinfo = {
                 message: '获取失败'+ e.sqlMessage
             }
         }
+    },
+    /**
+     * 通过用户名模糊搜索
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async searchUser(ctx, next) {
+        const { username } = ctx.query;
+        try {
+            if (username) {
+                const userInfo = await userService.getUserBySearch(username);
+                ctx.body = {
+                    code: 200,
+                    data: userInfo,
+                    message: userInfo ? 'success' : '暂无相关用户信息'
+                }
+            } else {
+                ctx.body = {
+                    code: 201,
+                    data: {},
+                    message: 'searchName为空'
+                }
+            }
+        } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: {},
+                message: '获取失败'+ e.sqlMessage
+            }
+        }
     }
 }
 

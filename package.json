@@ -23,7 +23,8 @@
     "lodash": "^4.17.20",
     "moment": "^2.29.0",
     "mysql": "^2.18.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "redis": "^3.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.0",

@@ -24,11 +24,13 @@ router.get('/userInfo', controllers.userinfo.get)
 router.get('/userInfo/id', controllers.userinfo.getUserById)
 router.get('/userInfo/department', controllers.userinfo.getList)
 router.put('/userInfo', controllers.userinfo.put)
+router.get('/userInfo/username',controllers.userinfo.searchUser)
 
 
 // 部门信息
-router.get('/department', controllers.department)
-
+router.get('/department', controllers.department.getTree)
+router.get('/department/list', controllers.department.getList)
+router.get('/department/children',controllers.department.getChildDepartment)
 // 机构信息
 router.get('/organization', controllers.organization)
 
@@ -42,7 +44,7 @@ router.get('/roster/today',controllers.roster.getToday)
 router.get('/roster/week',controllers.roster.getWeek)
 router.get('/roster/month',controllers.roster.getMonth)
 router.get('/roster/detail', controllers.roster.getDetail)
-
+router.get('/roster/search', controllers.roster.getDay)
 router.post('/roster/application',controllers.roster.post)
 router.get('/roster/hasApplication',controllers.roster.getExistOne)
 router.get('/roster/application/schedule',controllers.roster.getSchedule)

@@ -55,6 +55,11 @@ const user = {
         return mysql('user')
             .where({ department_id: departmentId })
             .select('id','username','phone')
+    },
+    async getUserByName(username) {
+        return mysql('user')
+            .where('username','like',`%${username}%`)
+            .select('id','username','phone')
     }
 }
 module.exports = user

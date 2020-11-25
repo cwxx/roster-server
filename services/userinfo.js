@@ -33,6 +33,14 @@ const userService = {
     },
     async getUserList( departmentId ) {
         return user.getUsers(departmentId)
+    },
+    /**
+     * 通过用户名模糊搜索
+     * @param username
+     * @returns {}
+     */
+    getUserBySearch(username) {
+        return user.getUserByName(username);
     }
 
 }

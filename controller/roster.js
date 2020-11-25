@@ -60,13 +60,41 @@ const roster = {
      */
     async getToday(ctx, next) {
         const { department_id, organization_id } = ctx.request.query;
-        console.log({ department_id, organization_id })
+        // console.log({ department_id, organization_id })
         try {
             const result = await rosterService.getTodayList(department_id, organization_id)
             ctx.body = {
                 code: 200,
                 data: result,
                 message: 'success'
+            }
+
+        } catch (e) {
+            debug(e)
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
+
+    },
+    /**
+     * 获取特定条件下的排班
+     * @param ctx
+     * @param next
+     * @returns {Promise<void>}
+     */
+    async getDay(ctx, next) {
+        const { departmentId, organization_id,rosterTime } = ctx.request.query;
+        // console.log({ department_id, organization_id })
+        try {
+            const result = await rosterService.getDayList(departmentId, organization_id, rosterTime)
+            debug(result)
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: result.length !== 0 ? 'success' : '暂无相关条件的排班信息！'
             }
 
         } catch (e) {
@@ -230,6 +258,29 @@ const roster = {
      * @returns {Promise<void>}
      */
     async getSchedule(ctx,next) {
+        const { application_id } = ctx.request.query;
+        const result = await rosterService.rosterSchedule(application_id)
+        try {
+            ctx.body = {
+                code: 200,
+                data: result,
+                message: 'success'
+            }
+
+        } catch (e) {
+            ctx.body = {
+                code: -1,
+                data: e,
+                message: 'fail'
+            }
+        }
+    },
+    /**
+     *
+     * @param {获取本部门未处理的调班申请} ctx
+     * @param {*} next
+     */
+    async getDepartmentInvite(ctx,next) {
         const { application_id } = ctx.request.query;
         const result = await rosterService.rosterSchedule(application_id)
         try {

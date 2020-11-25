@@ -48,6 +48,21 @@ const rosterService = {
         return this.getDeptRoster({startTime, endTime, department_id, organization_id})
     },
     /**
+     * 查找特定条件下的排班
+     * @param department_id
+     * @param organization_id
+     * @param day
+     * @returns {Promise<*>}
+     */
+    async getDayList(department_id, organization_id,rosterTime) {
+        // 零时零分零秒
+        let startTime = moment(new Date(rosterTime)).startOf('day').format();
+        // 23时59分59秒
+        let endTime = moment(new Date(rosterTime)).endOf('day').format();
+        console.log(startTime,endTime)
+        return this.getDeptRoster({startTime, endTime, department_id, organization_id})
+    },
+    /**
      * 获取本部门本周排班
      * @param department_id
      * @param organization_id

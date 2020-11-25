@@ -15,13 +15,15 @@ const department = {
 
     },
     /**
-     * 查询当前部门的父id
-     * @returns {parent_id}
+     * 获取parentId的所有子部门
+     * @param organizationId
+     * @param parentId
+     * @returns {department Array}
      */
-    async getParent(organizationId,id) {
+    async getChildrenDepart(organizationId, parentId) {
         return mysql('department')
-            .where({organization_id:organizationId, id: id})
-            .select('parent_id')
+            .where({organization_id:organizationId, parent_id: parentId})
+            .select('id','department_name','parent_id')
     }
 }
 module.exports = department
