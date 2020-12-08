@@ -182,107 +182,14 @@ const roster = {
         }
     },
     /**
-     * 查询该值班项在调班申请表中是否已存在
+     * 获取当前部门的用户的可替班列表
      * @param ctx
      * @param next
      * @returns {Promise<void>}
      */
-    async getExistOne(ctx, next) {
-        const {roster_id} = ctx.request.query
-        debug(roster_id)
-        try {
-            const result = await rosterService.selectOne(roster_id)
-            ctx.body = {
-                code: 200,
-                data: result,
-                message: 'success'
-            }
-        } catch (e) {
-            debug(e)
-            ctx.body = {
-                code: -1,
-                data: e,
-                message: 'fail'
-            }
-        }
-    },
-    /**
-     * 申请调班
-     * @param ctx
-     * @param next
-     * @returns {Promise<void>}
-     */
-    async post(ctx, next) {
-        try {
-            const {
-                applicationId,
-                applicationTargert_id,
-                roster_id,
-                applicationRosterType,
-                applicationTargertRosterType,
-                applicationTime,
-                applicationTargert_time,
-                applicationType,
-                departmentId
-            } = ctx.request.body;
-            await rosterService.add({
-                applicationId,
-                applicationTargert_id,
-                roster_id,
-                applicationRosterType,
-                applicationTargertRosterType,
-                applicationTime,
-                applicationTargert_time,
-                applicationType,
-                departmentId,
-            })
-            ctx.body = {
-                code: 200,
-                data: {},
-                message: 'success'
-            }
-
-        } catch (e) {
-            debug(e)
-            ctx.body = {
-                code: -1,
-                data: e,
-                message: 'fail'
-            }
-        }
-    },
-    /**
-     * 获取个人的所有申请信息
-     * @param ctx
-     * @param next
-     * @returns {Promise<void>}
-     */
-    async getSchedule(ctx,next) {
-        const { application_id } = ctx.request.query;
-        const result = await rosterService.rosterSchedule(application_id)
-        try {
-            ctx.body = {
-                code: 200,
-                data: result,
-                message: 'success'
-            }
-
-        } catch (e) {
-            ctx.body = {
-                code: -1,
-                data: e,
-                message: 'fail'
-            }
-        }
-    },
-    /**
-     *
-     * @param {获取本部门未处理的调班申请} ctx
-     * @param {*} next
-     */
-    async getDepartmentInvite(ctx,next) {
-        const { application_id } = ctx.request.query;
-        const result = await rosterService.rosterSchedule(application_id)
+    async getReplaceRoster(ctx,next) {
+        const { departmentId } = ctx.request.query;
+        const result = await rosterService.getReplaceList(departmentId)
         try {
             ctx.body = {
                 code: 200,

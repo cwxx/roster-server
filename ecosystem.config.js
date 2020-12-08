@@ -7,7 +7,7 @@ module.exports = {
     script: 'app.js',
     instances: 1,
     autorestart: true,
-    watch: false,
+    watch: true,
     max_memory_restart: '500M',
     log_date_format:'YYYY-MM-DD HH:mm Z',
     error_file:'./.pm2/logs/err.log',

@@ -19,7 +19,19 @@ const utils = {
             }
         })
         return targetTree
+    },
+    /**
+     * 将数组结构的数据转换成Map结构
+     * @param sourceArray
+     * @param key
+     * @constructor
+     */
+    ArrayToMap(sourceArray, key) {
+        let targetMap = new Map();
+        sourceArray.forEach(value => {
+            targetMap.set(value.id, value);
+        })
+        return targetMap;
     }
-
 }
 module.exports = utils

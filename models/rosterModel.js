@@ -39,19 +39,35 @@ const rosterModel = {
     async getDetail(id) {
         return mysql('roster').where({id: id})
     },
-    async selectOne(rosterId) {
-        return mysql('change_shifts').where({roster_id: rosterId})
+    getReplaceRosterList(departmentId, startTime) {
+        return mysql('roster')
+            .where({department_id: departmentId})
+            .where('roster_time', '>=', startTime)
+            .orderBy('roster_time', 'desc')
+            .select('id','title','roster_type_id','user_id','roster_time')
     },
-    async insert(application) {
-        return mysql('change_shifts').insert(application)
+    async update(roster) {
+        return mysql('roster')
+            .where({id: roster.id})
+            .update(roster)
     },
-    async querySchedule(application_id, startTime, endTime) {
-        return mysql('change_shifts')
-            .where({application_id: application_id})
-            .where('create_time', '>=', startTime)
-            .where('create_time', '<', endTime)
-            .orderBy('create_time', 'desc')
-            .select('id','application_time','status','roster_id','applicationType','update_time','create_time','handlerTime','handlerUser')
-    }
+    async add(roster) {
+        return mysql('roster').insert(roster)
+    },
+
+    // async selectOne(rosterId) {
+    //     return mysql('change_shifts').where({roster_id: rosterId})
+    // },
+    // async insert(application) {
+    //     return mysql('change_shifts').insert(application)
+    // },
+    // async querySchedule(application_id, startTime, endTime) {
+    //     return mysql('change_shifts')
+    //         .where({application_id: application_id})
+    //         .where('create_time', '>=', startTime)
+    //         .where('create_time', '<', endTime)
+    //         .orderBy('create_time', 'desc')
+    //         .select('id','application_time','status','roster_id','applicationType','update_time','create_time','handlerTime','handlerUser')
+    // }
 }
 module.exports = rosterModel

@@ -3,7 +3,7 @@ const config = require('./config')
 const response = require('./middlewares/response')
 const bodyParser = require('koa-bodyparser')
 const debug = require('debug')('app')
-const mysql = require('./tools/mysql')
+
 const app = new Koa()
 
 // 使用响应处理中间件

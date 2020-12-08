@@ -106,61 +106,35 @@ const rosterService = {
         return result[0]
     },
     /**
-     * 查询该值班项在值班申请表中是否已存在
-     * @param rosterId
-     * @returns {Promise<void>}
+     * 查询可替班列表
+     * @param departmentId
+     * @returns {*}
      */
-    async selectOne(rosterId) {
-        return rosterModel.selectOne(rosterId)
-    },
-    /**
-     * 新增调班申请
-     * @param roster
-     * @returns {Promise<Knex.QueryBuilder<any, number[]>>}
-     */
-    async add(roster) {
-        // let applicationTime = roster.applicationTime.slice(0, roster.applicationTime.length - 3)
-        // console.log(applicationTime)
-        const insertApplication = {
-            roster_id: roster.roster_id,
-            application_id: roster.applicationId,
-            applicationTargert_id: roster.applicationTargert_id,
-            applicationRosterType: roster.applicationRosterType,
-            applicationTargertRosterType: roster.applicationTargertRosterType,
-            application_time:  moment(roster.applicationTime).format("YYYY-MM-DD hh:mm:ss"),
-            applicationTargert_time: moment(roster.applicationTargert_time).format("YYYY-MM-DD hh:mm:ss"),
-            applicationType: roster.applicationType,
-            create_time: new Date(),
-            department_id: roster.departmentId,
-            status: 1,//待处理
-        }
-        return rosterModel.insert(insertApplication);
-    },
-    /**
-     * 获取当前日期所在月的个人申请信息
-     * @param application_id
-     * @returns {Promise<*>}
-     */
-    async rosterSchedule(application_id) {
-        // 本月第一天零时零分零秒
-        let startTime = moment().startOf('month').format();
-        // 本月最后一天23时59分59秒
-        let endTime = moment().endOf('month').format();
-        const result = await rosterModel.querySchedule(application_id, startTime, endTime )
-        result.forEach(item => {
-            item.application_time = item.application_time ? moment(item.application_time).format('YYYY-MM-DD') : '';
-            item.update_time = item.update_time ?  moment(item.update_time).format('YYYY-MM-DD hh:mm') : '';
-            item.create_time = item.create_time ? moment(item.create_time).format('YYYY-MM-DD hh:mm') : '';
-            item.handlerTime = item.handlerTime ? moment(item.handlerTime).format('YYYY-MM-DD,hh:mm'): '暂未处理';
-            item.handlerUser = item.handlerUser ? item.handlerUser : '暂未处理';
-            // TODO 通过用户id替换为用户名
+    async getReplaceList(departmentId) {
+        // 零时零分零秒
+        let startTime = moment(new Date()).startOf('day').format();
+        let replaceList = await rosterModel.getReplaceRosterList(departmentId, startTime);
+        return replaceList.map(value => {
+            value.title = `${value.title} || ${moment(value.roster_time).format('LL')}`
+            return value;
         })
-
-        return result;
+    },
+    /**
+     * 新增排班
+     * @param roster
+     */
+    addRoster(roster) {
 
     },
     /**
-     * 通用函数，对部门排班返回结果格式化
+     * 更新排班
+     * @param roster
+     */
+    updateRoster(roster) {
+
+    },
+    /**
+     * 处理函数，对部门排班返回结果格式化
      * @param queryParams
      * @returns {Promise<*>}
      */
@@ -180,7 +154,7 @@ const rosterService = {
         return rosterList;
     },
     /**
-     * 通用函数，对我的排班返回结果进行处理
+     * 处理函数，对我的排班返回结果进行处理
      * @param queryParams
      * @returns {Promise<*>}
      */
@@ -189,9 +163,9 @@ const rosterService = {
 
         for(let i=0, len=rosterList.length; i<len; i++) {
             // 值班时间已过期 status = -1
-            if ( moment(new Date()).add(-1,'days') > rosterList[i].roster_time) {
-                rosterList[i].status = -1;
-            }
+            // if ( moment(new Date()).add(-1,'days') > rosterList[i].roster_time) {
+            //     rosterList[i].status = -1;
+            // }
             let _date = moment(rosterList[i].roster_time).format('LL')
             let _weekend = moment(rosterList[i].roster_time).format('dddd')
             rosterList[i].roster_time = _date + ' ' +  _weekend;
@@ -200,7 +174,7 @@ const rosterService = {
         return rosterList;
     },
     /**
-     * 将周值班数组转换为按每天的表格形式
+     * 处理函数 将周值班数组转换为按每天的表格形式
      * @param weekRoster
      * @returns {[]}
      */

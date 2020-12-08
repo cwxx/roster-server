@@ -44,10 +44,14 @@ router.get('/roster/today',controllers.roster.getToday)
 router.get('/roster/week',controllers.roster.getWeek)
 router.get('/roster/month',controllers.roster.getMonth)
 router.get('/roster/detail', controllers.roster.getDetail)
+router.get('/roster/replace',controllers.roster.getReplaceRoster)
 router.get('/roster/search', controllers.roster.getDay)
-router.post('/roster/application',controllers.roster.post)
-router.get('/roster/hasApplication',controllers.roster.getExistOne)
-router.get('/roster/application/schedule',controllers.roster.getSchedule)
+// 调班申请信息
+router.get('/roster/application/departmentId',controllers.rosterInvitation.getList)
+router.put('/roster/application/update',controllers.rosterInvitation.updateShift)
+router.post('/roster/application',controllers.rosterInvitation.post)
+router.get('/roster/hasApplication',controllers.rosterInvitation.getExistOne)
+router.get('/roster/application/schedule',controllers.rosterInvitation.getSchedule)
 
 // 排班类型
 router.get('/rosterType',controllers.rosterType)
